@@ -1,0 +1,14 @@
+flask
+tensorflow
+numpy
+pillow
+flask-cors
+rasterio
+matplotlib
+earthengine-api
+requests
+opencv-python
+tensorflow-hub
+keras
+keras-tuner
+scikit-learn

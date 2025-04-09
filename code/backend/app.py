@@ -33,18 +33,22 @@ def fetch_image():
         point = ee.Geometry.Point([lng, lat])
         region = point.buffer(500).bounds()
 
-        image = (ee.ImageCollection("COPERNICUS/S2_SR_HARMONIZED")
+        image_collection = (ee.ImageCollection("COPERNICUS/S2_SR_HARMONIZED")
             .filterBounds(point)
             .filterDate(start_date, end_date)
-            .filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", 10))  # max 10% cloud cover
-            .sort("CLOUDY_PIXEL_PERCENTAGE")
-            .first()
-            .select(['B8', 'B4', 'B3', 'B2'])
-            .clip(region))
+            .filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", 10))
+            .sort("CLOUDY_PIXEL_PERCENTAGE"))
 
+        image = image_collection.first()
 
-        if image is None or image.getInfo() is None:
-            return jsonify({"error": "No cloud-free image found in range."}), 404
+        # Check if an image was found
+        info = image.getInfo()
+        if info is None:
+            return jsonify({"error": "No cloud-free image found in this date range and location."}), 404
+
+        # Continue with clipping + band selection
+        image = image.select(['B8', 'B4', 'B3', 'B2']).clip(region)
+
 
         # Get the download URL
         url = image.getDownloadURL({

@@ -59,12 +59,12 @@ function App() {
   if (!isLoaded) return "Loading Maps...";
 
   return (
-    <div style={{ padding: "0", backgroundColor: "#133C12", minHeight: "100vh", color: "white" }}>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", backgroundColor: "#133C12", color: "white" }}>
       <nav style={{ backgroundColor: "black", padding: "1rem", position: "sticky", top: 0, zIndex: 1000 }}>
         <h1 style={{ margin: 0, fontSize: "2rem" }}>Deforestation Analysis Tool</h1>
       </nav>
-
-      <div style={{ padding: "1rem" }}>
+  
+      <main style={{ padding: "1rem", flex: 1 }}>
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           zoom={7}
@@ -73,13 +73,13 @@ function App() {
         >
           {marker && <Marker position={marker} />}
         </GoogleMap>
-
+  
         <div style={{ marginTop: "1rem", display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
           <label>Start Date:</label>
           <DatePicker selected={startDate} onChange={setStartDate} />
           <label>End Date:</label>
           <DatePicker selected={endDate} onChange={setEndDate} />
-
+  
           <button
             style={{
               padding: "10px 20px",
@@ -97,14 +97,14 @@ function App() {
             Fetch Image & Predict
           </button>
         </div>
-
+  
         {geeImageURL && resultImage && (
           <div style={{ marginTop: "2rem", display: "flex", gap: "2rem", flexWrap: "wrap" }}>
             <div>
               <h2 style={{ fontSize: "1.5rem" }}>Sentinel-2 Image</h2>
               <img src={geeImageURL} alt="Sentinel-2" style={{ maxWidth: "400px", borderRadius: "8px" }} />
             </div>
-
+  
             <div>
               <h2 style={{ fontSize: "1.5rem" }}>Deforestation Prediction</h2>
               <img
@@ -115,12 +115,13 @@ function App() {
             </div>
           </div>
         )}
-      </div>
+      </main>
+  
       <footer style={{ backgroundColor: "black", color: "white", textAlign: "center", padding: "0.5rem", fontSize: "0.9rem" }}>
         Built by Léanne Ricard
       </footer>
     </div>
   );
-}
+}  
 
 export default App;
